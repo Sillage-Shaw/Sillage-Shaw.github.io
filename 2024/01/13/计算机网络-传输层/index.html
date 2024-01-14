@@ -1,0 +1,420 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>计算机网络-传输层 | Hexo</title><meta name="author" content="John Doe"><meta name="copyright" content="John Doe"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="传输层[TOC] 1. 传输层提供的服务1.1. 传输层的功能 * 传输层提供应用进程之间逻辑通信（ 端到端通信 ），网络层提供的是主机到主机的通信 复用和分用: 复用：发送方不同的应用进程可以用同一个传输层协议传送数据。 分用：接收方的传输层在剥去报文首部后能够把这些数据正确交付到应用进程。   传输层对收到的报文进行差错检测 提供两种不同的传输协议：面向连接的 TCP 和无连接的 UDP 传输">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算机网络-传输层">
+<meta property="og:url" content="http://example.com/2024/01/13/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E4%BC%A0%E8%BE%93%E5%B1%82/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="传输层[TOC] 1. 传输层提供的服务1.1. 传输层的功能 * 传输层提供应用进程之间逻辑通信（ 端到端通信 ），网络层提供的是主机到主机的通信 复用和分用: 复用：发送方不同的应用进程可以用同一个传输层协议传送数据。 分用：接收方的传输层在剥去报文首部后能够把这些数据正确交付到应用进程。   传输层对收到的报文进行差错检测 提供两种不同的传输协议：面向连接的 TCP 和无连接的 UDP 传输">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png">
+<meta property="article:published_time" content="2024-01-13T02:44:03.000Z">
+<meta property="article:modified_time" content="2024-01-14T00:17:24.059Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2024/01/13/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E4%BC%A0%E8%BE%93%E5%B1%82/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.12.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.32/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: 'Copy Successful',
+    error: 'Copy Error',
+    noSupport: 'Browser Not Supported'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: 'Just now',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.0/dist/infinitegrid.min.js',
+    buttonText: 'Load More'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '计算机网络-传输层',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-01-14 08:17:24'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">4</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><hr class="custom-hr"/></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="Hexo"><span class="site-name">Hexo</span></a></span><div id="menus"><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">计算机网络-传输层</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2024-01-13T02:44:03.000Z" title="Created 2024-01-13 10:44:03">2024-01-13</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2024-01-14T00:17:24.059Z" title="Updated 2024-01-14 08:17:24">2024-01-14</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="计算机网络-传输层"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post Views:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="传输层"><a href="#传输层" class="headerlink" title="传输层"></a>传输层</h1><p>[TOC]</p>
+<h2 id="1-传输层提供的服务"><a href="#1-传输层提供的服务" class="headerlink" title="1. 传输层提供的服务"></a>1. 传输层提供的服务</h2><h3 id="1-1-传输层的功能"><a href="#1-1-传输层的功能" class="headerlink" title="1.1. 传输层的功能 *"></a>1.1. 传输层的功能 *</h3><ul>
+<li>传输层提供应用进程之间逻辑通信（ <strong><code>端到端</code>通信</strong> ），网络层提供的是<strong>主机到主机</strong>的通信</li>
+<li>复用和分用:<ul>
+<li>复用：发送方<strong>不同的应用进程</strong>可以用<strong>同一个传输层协议</strong>传送数据。</li>
+<li>分用：接收方的传输层在剥去报文首部后能够把这些数据正确交付到应用进程。</li>
+</ul>
+</li>
+<li>传输层对收到的报文进行<strong>差错检测</strong></li>
+<li>提供两种不同的传输协议：<strong>面向连接</strong>的 <strong><code>TCP</code></strong> 和<strong>无连接</strong>的 <strong><code>UDP</code></strong></li>
+<li>传输层向高层屏蔽了低层网络核心的细节，如<strong>网络拓扑，路由协议</strong>等。它使得进程看见的是两个传输层实体之间的一条<strong>端到端的逻辑通信信道</strong>，信道对上层的表现因传输层协议的不同而不同。</li>
+</ul>
+<h3 id="1-2-传输层的寻址与端口"><a href="#1-2-传输层的寻址与端口" class="headerlink" title="1.2. 传输层的寻址与端口 *"></a>1.2. 传输层的寻址与端口 *</h3><h4 id="1-2-1-端口的作用"><a href="#1-2-1-端口的作用" class="headerlink" title="1.2.1. 端口的作用"></a>1.2.1. 端口的作用</h4><ul>
+<li>端口是传输层<strong>服务访问点（<code>TSAP</code>）</strong>，用于标识主机中的某个<strong>应用进程</strong></li>
+<li>其能够让<strong>应用层</strong>的各种应用进程将数据通过端口向下交付给<strong>传输层</strong></li>
+<li>也能够让<strong>传输层</strong>将报文段中的数据通过端口向上交付给<strong>应用层</strong><blockquote>
+<p>数据链路层的SAP是<strong>MAC地址</strong>，网络层的SAP是<strong>IP地址</strong>，传输层的SAP是<strong>端口号</strong> </p>
+</blockquote>
+</li>
+</ul>
+<h4 id="1-2-2-端口号"><a href="#1-2-2-端口号" class="headerlink" title="1.2.2. 端口号 *"></a>1.2.2. 端口号 *</h4><ul>
+<li>应用程序通过<strong>端口号</strong>进行标识，长度为 $16bit$ </li>
+<li>端口号只具有<strong>本地意义</strong>，即端口号只标识本计算机应用层的进程。</li>
+<li>端口号分类：<ul>
+<li>服务器端:<ul>
+<li>熟知端口号：0-1023，用于<strong>TCP/IP最重要的一些应用程序</strong></li>
+<li>登记端口号：1024-49151，也叫注册端口号，用于<strong>没有熟知端口号的应用程序</strong></li>
+</ul>
+</li>
+<li>客户端:<ul>
+<li>临时端口号：49152-65535，也叫动态端口号，用于<strong>客户进程运行时才会动态选择</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="1-2-3-套接字"><a href="#1-2-3-套接字" class="headerlink" title="1.2.3. 套接字 *"></a>1.2.3. 套接字 *</h4><ul>
+<li><strong><code>IP</code></strong>区分不同<strong>主机</strong>，<strong><code>端口号</code></strong>区分不同<strong>应用进程</strong>，<strong><code>套接字</code></strong>区分不同<strong>通信端点</strong>。</li>
+</ul>
+<script type="math/tex; mode=display">套接字Socket=（IP地址:端口号）</script><p>（<strong><code>协议</code></strong>、<strong><code>源地址</code></strong>、<strong><code>目的地址</code></strong>、<strong><code>源端口号</code></strong>、<strong><code>目的端口号</code></strong>）唯一标识一次<strong>传输层通信</strong></p>
+<h3 id="1-3-无连接服务与面向连接服务"><a href="#1-3-无连接服务与面向连接服务" class="headerlink" title="1.3. 无连接服务与面向连接服务"></a>1.3. 无连接服务与面向连接服务</h3><ul>
+<li><strong><code>面向连接服务</code></strong>：通信前必须<strong>建立连接</strong>，通信过程中，整个连接的情况被实时<strong>监控和管理</strong>，通信结束后必须<strong>释放连接</strong>。</li>
+<li><strong><code>无连接服务</code></strong>：需要通信时，直接将信息发送到网络中，让信息在网上<strong>尽力而为地</strong>向目的地传送。</li>
+<li><strong><code>TCP</code></strong> 提供 <strong><code>面向连接服务</code></strong>，增加许多开销，诸如<strong>确认</strong>、<strong>流量控制</strong>、<strong>计时器</strong>及<strong>连接管理</strong>。适用<strong>可靠性更高</strong>的场合，如<strong>FTP</strong>，<strong>HTTP</strong>等。</li>
+<li><strong><code>UDP</code></strong> 采用 <strong><code>无连接服务</code></strong>，在IP之上只提供<strong>多路复用</strong>和<strong>错误检查</strong>。执行速度更快，实时性好，如<strong>TFTP（小文件传输协议），DNS，SNMP和RTP（实时传输协议）</strong>。</li>
+<li><strong><code>IP数据报</code></strong> 在网络层要经过路由器存储转发， <strong><code>UDP数据报</code></strong> 在传输层的端到端的逻辑信道传输，其封装成IP数据报在网络层传输时，UDP数据报的信息<strong>对路由不可见</strong>。</li>
+<li><strong><code>TCP报文段</code></strong> 在传输层抽象逻辑信道传输，<strong>对路由器不可见</strong>；在传输层采用TCP不影响网络层提供<strong>无连接服务</strong><h2 id="2-UDP协议"><a href="#2-UDP协议" class="headerlink" title="2. UDP协议 *"></a>2. UDP协议 *</h2><h3 id="2-1-UDP数据报"><a href="#2-1-UDP数据报" class="headerlink" title="2.1. UDP数据报 *"></a>2.1. UDP数据报 *</h3><h4 id="2-1-1-概述"><a href="#2-1-1-概述" class="headerlink" title="2.1.1. 概述 *"></a>2.1.1. 概述 *</h4></li>
+<li><strong><code>UDP</code></strong>是<strong>无连接</strong>的<strong>传输层协议</strong>，它为应用层提供了一种<strong>不可靠的数据传输服务</strong>。</li>
+<li>在<strong>IP数据报</strong>上增加最基本的服务：<strong>复用和分用</strong>，<strong>差错检测</strong></li>
+<li>优点<ul>
+<li>无需建立连接，不会引入<strong>建立连接时延</strong>。</li>
+<li>无连接状态，不用维护连接状态，不用跟踪控制参数，能支持更多的客户机。</li>
+<li>分组首部开销小，只有<strong>8B</strong>。</li>
+<li>应用层能更好控制发送的<strong>数据</strong>和<strong>发送时间</strong>。UDP<strong>没有拥塞控制</strong>，故网络中的拥塞不会影响<strong>主机发送效率</strong></li>
+<li>支持<strong>一对一，一对多，多对一和多对多</strong>的交互通信。</li>
+</ul>
+</li>
+<li>UDP常用于一次性传输较少数据的网络应用，如 <strong><code>DNS</code></strong>，<strong><code>SNMP</code></strong>，以及<strong>多媒体应用</strong>。</li>
+<li>UDP不保证可靠交付，不意味着应用对数据要求是不可靠的。所有维护可靠性的工作可由用户在应用层完成。</li>
+<li>UDP是<strong>面向报文</strong>的，UDP对应用层交下来的报文，不进行任何拆分，也不会对报文进行合并，而是<strong>直接将应用层交下来的报文封装</strong>成UDP数据报，然后交给IP层。对于IP层交上来的UDP数据报，去除首部后，直接交给应用层。因此<strong>报文</strong>不可分割，是UDP数据报处理的<strong>最小单位</strong>。</li>
+</ul>
+<h4 id="2-1-2-UDP首部格式"><a href="#2-1-2-UDP首部格式" class="headerlink" title="2.1.2. UDP首部格式 *"></a>2.1.2. UDP首部格式 *</h4><ul>
+<li>UDP首部<strong>8B</strong>，包括<strong>源端口号</strong>，<strong>目的端口号</strong>，<strong>长度</strong>，<strong>校验和</strong>。<ul>
+<li><strong><code>源端口</code></strong>：<strong>2B</strong>，源端口号，需要对方回信时选用，否则全0</li>
+<li><strong><code>目的端口号</code></strong>：<strong>2B</strong>，目的端口号，终点交付报文时必须使用</li>
+<li><strong><code>长度</code></strong>：<strong>2B</strong>，UDP首部和UDP数据的总长度，单位<strong>字节</strong>，最小值为<strong>8B</strong>，即仅有首部</li>
+<li><strong><code>校验和</code></strong>：<strong>2B</strong>，检验UDP首部和UDP数据的正确性，如果为0，表示不检验</li>
+</ul>
+</li>
+<li>传输层将UDP数据报根据不同端口上交给不同应用进程，即 <strong><code>UDP分用</code></strong></li>
+<li>如果接收方UDP发现端口号不正确，则丢弃报文，并且由ICMP发送<strong>差错报文</strong>给发送方</li>
+</ul>
+<h3 id="2-2-UDP校验"><a href="#2-2-UDP校验" class="headerlink" title="2.2. UDP校验"></a>2.2. UDP校验</h3><ul>
+<li>在UDP数据报前添加 <strong><code>12B伪首部</code></strong>，得到临时数据报。<strong>伪首部</strong>不向上或向下传递，只是为了计算 <strong><code>校验和</code></strong> 。</li>
+<li>源IP地址 <strong>(4B)</strong>，目的IP地址 <strong>(4B)</strong>，0 <strong>(1B)</strong>，UDP协议号17 <strong>(1B)</strong>，UDP长度 <strong>(2B)</strong>，共<strong>12B</strong>。</li>
+<li>发送方把<strong>全0</strong>放入<strong>校验和</strong>并添加<strong>伪首部</strong>，然后把UDP视为<strong>16位字串</strong>的拼接。若数据部分不是偶数个字节，则末尾添加<strong>1个全0字节</strong>（只添加不发送）。</li>
+<li>按 <strong><code>二进制反码</code></strong> 计算这些16位字串的和，将 <strong>和的反码</strong> 写入校验和字段并发送。</li>
+<li>接收方把收到的UDP<strong>加上伪首部</strong>，按<strong>二进制反码</strong>求16位字串的和。若结果位<strong>全1</strong>，则表明无差错，否则<strong>丢弃报文</strong>。<h2 id="3-TCP协议"><a href="#3-TCP协议" class="headerlink" title="3. TCP协议 *"></a>3. TCP协议 *</h2><h3 id="3-1-TCP协议特点"><a href="#3-1-TCP协议特点" class="headerlink" title="3.1. TCP协议特点 *"></a>3.1. TCP协议特点 *</h3></li>
+<li><strong><code>TCP</code></strong>是<strong>面向连接</strong>的<strong>传输层协议</strong>，其连接是<strong>逻辑链接</strong>，主要解决传输<strong>可靠</strong>，<strong>有序</strong>，<strong>无丢失</strong>和<strong>不重复问题</strong>。</li>
+<li>每条TCP连接只能有<strong>两个端点</strong>，每一条TCP连接只能是<strong>端到端</strong>的（进程对进程）。</li>
+<li>TCP提供可靠交付的服务，保证传输的数据<strong>无差错</strong>，<strong>不丢失</strong>，<strong>不重复</strong>，且<strong>按序</strong>到达。</li>
+<li>TCP提供<strong>全双工通信</strong>，允许通信双方的应用进程在<strong>任何时候</strong>都能发送数据。所以TCP连接的两端都设有<strong>发送缓存</strong>和<strong>接收缓存</strong>，用来临时存放双方通信的数据。<ul>
+<li><strong>发送缓存</strong>：<ul>
+<li>发送应用程序传送给发送方TCP准备发送的数据</li>
+<li>TCP已发送但尚未收到确认的数据</li>
+</ul>
+</li>
+<li><strong>接收缓存</strong>：<ul>
+<li>按序到达的数据，但尚未被接收应用程序读取的数据</li>
+<li>不按序到达的数据</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>TCP是<strong>面向字节流</strong>的，其将应用程序传下来的数据视为一连串<strong>无结构的字节流</strong></li>
+<li>UDP报文长度由发送的<strong>应用进程</strong>决定，TCP报文长度根据<strong>接收方的窗口值</strong>和<strong>网络拥塞程度</strong>决定。</li>
+</ul>
+<h3 id="3-2-TCP报文段"><a href="#3-2-TCP报文段" class="headerlink" title="3.2. TCP报文段 *"></a>3.2. TCP报文段 *</h3><ul>
+<li>TCP报文段既可以<strong>运载数据</strong>，也可以<strong>建立连接</strong>，<strong>释放连接</strong>和<strong>应答</strong></li>
+<li>TCP报文字段：<ul>
+<li><strong><code>源端口和目的端口</code></strong>：各<strong>2B</strong>，传输层和应用层的服务接口，<strong>复用和分用</strong>功能依靠端口号实现</li>
+<li><strong><code>序号</code></strong>：<strong>4B</strong>，<strong>32位</strong>的序号，用来标识本报文段所发送的数据的第一个字节的序号</li>
+<li><strong><code>确认号</code></strong>：<strong>4B</strong>，期望收到对方下一个报文段的第一个数据。若确认号为N，则表明到N-1为止的数据已经正确收到</li>
+<li><strong><code>数据偏移</code></strong>：<strong>4位</strong>，指TCP报文段数据起始处距离TCP报文起始处多远，单位是<strong>4B</strong>，即<strong>32位</strong>，最大值为<strong>60B</strong>，即<strong>15个32位</strong>，即<strong>60B</strong></li>
+<li><strong><code>保留位</code></strong>：<strong>6位</strong>，保留位，目前没有使用</li>
+<li><strong><code>紧急位URG</code></strong>：<strong>1位</strong>，<strong>紧急指针字段</strong>是否有效，尽快传输紧急数据</li>
+<li><strong><code>确认位ACK</code></strong>：<strong>1位</strong>，<strong>确认号字段</strong>是否有效，TCP规定建立连接后，所有报文段都必须把ACK置1</li>
+<li><strong><code>推送位PSH</code></strong>：<strong>1位</strong>，接收方TCP是否<strong>立即</strong>将收到的数据交给应用程序，而不是等到缓存填满再向上交付。</li>
+<li><strong><code>复位位RST</code></strong>：<strong>1位</strong>，表示TCP连接出现严重差错，必须<strong>释放连接</strong>，然后<strong>重新建立连接</strong></li>
+<li><strong><code>同步位SYN</code></strong>：<strong>1位</strong>，表示连接请求（ACK=0）或连接接受（ACK=1）报文段</li>
+<li><strong><code>终止位FIN</code></strong>：<strong>1位</strong>，表示<strong>释放连接</strong>。</li>
+<li><strong><code>窗口</code></strong>：<strong>2B</strong>，<strong>16位</strong>，允许对方发送的数据量。</li>
+<li><strong><code>校验和</code></strong>：<strong>2B</strong>，校验和字段检验范围包括<strong>首部和数据</strong>两部分。与UDP一样，要在TCP报文段前加上<strong>12B的伪首部</strong></li>
+<li><strong><code>紧急指针</code></strong>：<strong>2B</strong>，只有在<strong>URG=1</strong>时才有意义，指出本报文段中紧急数据共多少字节。</li>
+<li><strong><code>选项</code></strong>：长度可变。TCP最初只规定了一种选项，即 <strong><code>MSS</code>最大报文段长度</strong>，表示数据字段的最大长度。</li>
+<li><strong><code>填充</code></strong>：为了使整个首部长度是 <strong><code>4B</code></strong> 的整数倍</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-3-TCP连接管理"><a href="#3-3-TCP连接管理" class="headerlink" title="3.3. TCP连接管理 *"></a>3.3. TCP连接管理 *</h3><ul>
+<li>TCP连接的建立和释放需要经过<strong>三次握手</strong>和<strong>四次挥手</strong>，<strong>TCP连接是全双工的</strong>，即<strong>双方都可以同时发送数据</strong>。</li>
+<li>TCP解决的三个问题：使双方确知对方存在；允许双方协商参数；能够对运输实体资源进行分配。</li>
+<li>TCP连接的端口是<strong>套接字</strong>，每条TCP连接都唯一地被通信的两个端点（套接字）确定。</li>
+<li>TCP连接的建立采用 <strong><code>C/S</code></strong> 模式，主动发起建立连接的应用进程称为 <strong>客户端<code>Client</code></strong> ，被动等待建立连接的应用进程称为 <strong>服务器<code>Server</code></strong> 。</li>
+</ul>
+<h4 id="3-3-1-TCP连接的建立"><a href="#3-3-1-TCP连接的建立" class="headerlink" title="3.3.1. TCP连接的建立 *"></a>3.3.1. TCP连接的建立 *</h4><p><img src="04-传输层.png" alt=""></p>
+<ul>
+<li><strong><code>三次握手</code></strong>：建立连接时，客户端和服务器端需要<strong>发送SYN</strong>，<strong>SYN+ACK</strong>，<strong>ACK</strong>三个报文段。</li>
+<li><strong><code>建立连接前</code></strong>：服务器处于 <strong><code>LISTEN</code>收听</strong>状态。</li>
+<li><strong><code>第一次握手</code></strong>：客户端发送<strong>连接请求</strong>报文段，<strong>SYN=1</strong>，<strong>Seq=x</strong>（初始序号），<strong>ACK=0</strong>，客户端进入 <strong><code>SYN_SENT</code>同步已发送</strong> 状态，等待服务器确认。</li>
+<li><strong><code>第二次握手</code></strong>：服务器收到连接请求报文段后，如果同意建立连接，则会发送一个<strong>连接确认报文段</strong>，<strong>SYN=1</strong>，<strong>ACK=1</strong>，<strong>Seq=y</strong>，<strong>ack(确认号)=x+1</strong>，服务器进入 <strong><code>SYN_RCVD</code>同步收到</strong> 状态。</li>
+<li><strong><code>第三次握手</code></strong>：客户端收到连接确认报文段后，还要向服务器发送一个<strong>确认报文段</strong>，<strong>ACK=1</strong>，<strong>Seq=x+1</strong>，<strong>ack=y+1</strong>，客户端进入 <strong><code>ESTABLISHED</code>已建立</strong> 状态，完成TCP连接的建立。<blockquote>
+<p>第二次握手<strong>不能携带数据</strong>，也要消耗一个序号；第三次握手如果<strong>不携带数据则不消耗序号</strong>。</p>
+<p>服务器端的资源是<strong>第二次握手</strong>时分配的，客户端资源是<strong>第三次握手</strong>时分配的。服务器容易收到SYN洪泛攻击。</p>
+</blockquote>
+</li>
+</ul>
+<h4 id="3-3-2-TCP连接的释放"><a href="#3-3-2-TCP连接的释放" class="headerlink" title="3.3.2. TCP连接的释放 *"></a>3.3.2. TCP连接的释放 *</h4><ul>
+<li>参与TCP连接的两个进程中<strong>任何一个</strong>都能终止连接。<blockquote>
+<p>以下假设<strong>客户端先挥手</strong>。</p>
+</blockquote>
+</li>
+<li><strong><code>四次挥手</code></strong>：释放连接时，客户端和服务器端需要<strong>发送FIN</strong>，<strong>ACK</strong>，<strong>FIN</strong>，<strong>ACK</strong>四个报文段。</li>
+<li><strong><code>第一次挥手</code></strong>：客户端向TCP发送<strong>连接释放</strong>报文段，<strong>FIN=1</strong>，<strong>Seq=u</strong>，客户端进入 <strong><code>FIN_WAIT_1</code>终止等待1</strong> 状态，停止发送数据，但<strong>对方可以继续发送数据</strong>。</li>
+<li><strong><code>第二次挥手</code></strong>：服务器收到<strong>连接释放</strong>报文段后，发送一个<strong>确认报文段</strong>，<strong>ACK=1</strong>，<strong>Seq=v</strong>，<strong>ack=u+1</strong>，服务器进入 <strong><code>CLOSE_WAIT</code>关闭等待</strong> 状态，此时TCP连接处于<strong>半关闭状态</strong>。</li>
+<li><strong><code>期间</code></strong>：客户端到服务器端的连接已经释放，<strong>但服务器到客户端的连接还没有释放</strong>，服务器发送的数据客户端仍需接收。</li>
+<li><strong><code>第三次挥手</code></strong>：服务器向客户端发送<strong>连接释放</strong>报文段，<strong>ACK=1</strong>，<strong>FIN=1</strong>，<strong>Seq=w</strong>，<strong>ack=u+1</strong>，服务器进入 <strong><code>LAST_ACK</code>最后确认</strong> 状态。</li>
+<li><strong><code>第四次挥手</code></strong>：客户端收到<strong>连接释放</strong>报文段后，发送一个<strong>确认报文段</strong>，<strong>ACK=1</strong>，<strong>Seq=u+1</strong>，<strong>ack=w+1</strong>，客户端进入 <strong><code>TIME_WAIT</code>时间等待</strong> 状态，等待可能出现的<strong>对方的最后一个ACK</strong>。在 <strong><code>2MSL</code>最长报文段寿命</strong> 后，客户端进入 <strong><code>CLOSED</code>关闭</strong> 状态，完成TCP连接的释放。</li>
+</ul>
+<h3 id="3-4-TCP可靠传输"><a href="#3-4-TCP可靠传输" class="headerlink" title="3.4. TCP可靠传输"></a>3.4. TCP可靠传输</h3><ul>
+<li>TCP使用了<strong>校验</strong>，<strong>序号</strong>，<strong>确认</strong>和<strong>重传</strong>等机制来达到目的。其中TCP的<strong>校验机制</strong>与UDP校验一样。<h4 id="3-4-1-序号"><a href="#3-4-1-序号" class="headerlink" title="3.4.1. 序号"></a>3.4.1. 序号</h4></li>
+<li>序号建立在<strong>字节流</strong>的基础上，TCP首部的序号保证数据能<strong>有序</strong>交给应用层。<h4 id="3-4-2-确认"><a href="#3-4-2-确认" class="headerlink" title="3.4.2. 确认"></a>3.4.2. 确认</h4></li>
+<li>TCP的确认机制是<strong>接收方</strong>向<strong>发送方</strong>发送确认信息，确认信息中包含了<strong>期望收到的下一个字节的序号</strong>。</li>
+<li>发送方缓存区会存储<strong>已发送未收到确认</strong>的报文段，以便需要时<strong>重传</strong>。</li>
+<li>TCP默认使用 <strong><code>累积确认</code></strong>。即只确认数据流中<strong>至第一个丢失字节为止</strong>的字节。</li>
+</ul>
+<h4 id="3-4-3-重传"><a href="#3-4-3-重传" class="headerlink" title="3.4.3. 重传"></a>3.4.3. 重传</h4><ul>
+<li>两种事件会导致TCP重传： <strong><code>超时</code></strong> 和 <strong><code>冗余ACK</code></strong>。</li>
+<li><strong><code>超时</code></strong><ul>
+<li>TCP发送一个报文段后，对其设置<strong>计时器</strong>，如果到重传时间后还未收到确认，则重传这一报文段。</li>
+<li>由于传输层往返时延<strong>方差很大</strong>，TCP采用<strong>自适应算法</strong>。</li>
+<li><strong>往返时间<code>RTT</code></strong>：一个报文发出和收到确认的<strong>时间差</strong>。</li>
+<li>TCP随着测量 $RTT$ 样本值的变化，根据加权平均算法，算出平均往返时延 $RTT_{S}$，又称<strong>平滑往返时延</strong>。</li>
+</ul>
+</li>
+</ul>
+<script type="math/tex; mode=display">
+RTT_{S-New} = \alpha RTT + (1-\alpha)RTT_{S-Old}</script><ul>
+<li><strong>超时重传时间</strong> $RTO$ 应略大于 $RTT_{S}$。</li>
+</ul>
+<script type="math/tex; mode=display">
+RTO = RTT_{S} + 4 × RTT_{D}</script><ul>
+<li>$RTT_{D}$ 是 $RTT$ 的偏差加权平均值，其与 $RTT_{S}$ 和新的 $RTT$ 样本之差有关。第一次测量时， $RTT_{D}$ 为测量到的 $RTT$ 样本值的<strong>一半</strong>。在以后的测量中，使用下面的公式计算 $RTT_{D}$。</li>
+</ul>
+<script type="math/tex; mode=display">RTT_{D-New} = (1-\beta)  RTT_{D-Old} + \beta |RTT_{S} - RTT|</script><ul>
+<li>一般 $\beta \lt 1$，推荐值是 $0.25$</li>
+<li><ul>
+<li><strong><code>冗余确认</code></strong></li>
+</ul>
+</li>
+<li>每当<strong>比期望序号大</strong>的失序报文到达时，就发送一个 <strong><code>冗余ACK</code></strong>，指明<strong>下一个期待字节</strong>的序号。</li>
+<li>当发送方收到同一个报文段的 <strong><code>三次</code>冗余ACK</strong>后，就可认为跟在这个被确认报文段后的报文段已经丢失，于是 <strong><code>快速重传</code></strong> 这个报文段。</li>
+</ul>
+<h3 id="3-5-TCP流量控制"><a href="#3-5-TCP流量控制" class="headerlink" title="3.5. TCP流量控制 *"></a>3.5. TCP流量控制 *</h3><ul>
+<li>流量控制的目的是消除发送方和接收方之间的<strong>数据传输速率不匹配</strong>的问题。</li>
+<li>TCP采用基于 <strong><code>滑动窗口协议</code></strong> 的流量控制机制。</li>
+<li>接收方根据自己接收缓存的大小，动态调整发送方的发送窗口大小，这称为<strong>接收窗口<code>rwnd</code></strong>，单位<strong>字节</strong>。</li>
+<li>发送方根据当前网络<strong>拥塞程度</strong>的估计而确定的窗口值，称为<strong>拥塞窗口<code>cwnd</code></strong>，其大小与<strong>网络带宽</strong>和<strong>时延</strong>密切相关。</li>
+</ul>
+<h3 id="3-6-TCP拥塞控制"><a href="#3-6-TCP拥塞控制" class="headerlink" title="3.6. TCP拥塞控制 *"></a>3.6. TCP拥塞控制 *</h3><ul>
+<li><strong>描述</strong>：<ul>
+<li>拥塞控制防止<strong>过多数据注入网络</strong>，保证网络中路由器或链路不致过载。</li>
+<li>拥塞控制让网络能够<strong>承受现有网络负荷</strong>，是<strong>全局过程</strong>，涉及所有主机和路由器。</li>
+<li>流量控制往往是指<strong>点对点的通信量的控制</strong>，是端到端的问题，它要做的是<strong>抑制发送端发送数据的速率</strong>，使得接收端能够及时地处理接收到的数据。</li>
+</ul>
+</li>
+<li><strong>维护<code>两个窗口</code></strong>:<ul>
+<li><strong>接收窗口<code>rwnd</code></strong>：反应<strong>接收方容量</strong>，<strong>接收方</strong>根据TCP首部窗口字段通知发送方。</li>
+<li><strong>拥塞窗口<code>cwnd</code></strong>：反应<strong>网络当前容量</strong>，<strong>发送方</strong>根据网络拥塞程度动态调整。</li>
+<li><strong>发送窗口上限值</strong>：上述两个之间最小的一个。</li>
+</ul>
+</li>
+</ul>
+<script type="math/tex; mode=display">
+发送窗口上限值 = min(rwnd, cwnd)</script><ul>
+<li><strong><code>四种算法</code></strong>：<strong>慢开始</strong>，<strong>拥塞避免</strong>，<strong>快重传</strong>，<strong>快恢复</strong>。<h4 id="3-6-1-慢开始"><a href="#3-6-1-慢开始" class="headerlink" title="3.6.1. 慢开始 *"></a>3.6.1. 慢开始 *</h4></li>
+<li>令<strong>cwnd=1</strong>，即一个最大报文段长度MSS，每收到一个报文段的确认后，<strong>将cwnd加一</strong>。宏观上，每经过一个往返时间RTT，<strong>cwnd就<code>加倍</code></strong>，直至增加到一个规定的<strong>慢开始门限<code>ssthresh</code>（阈值）</strong> ，然后采用 <strong><code>拥塞避免算法</code></strong> 。</li>
+<li><strong>慢开始的<code>慢</code></strong> 指 <strong>开始慢</strong>，即开始设置<strong>cwnd=1</strong>。</li>
+</ul>
+<h4 id="3-6-2-拥塞避免算法"><a href="#3-6-2-拥塞避免算法" class="headerlink" title="3.6.2. 拥塞避免算法 *"></a>3.6.2. 拥塞避免算法 *</h4><ul>
+<li>每经过一个往返时延RTT就把发送方的拥塞窗口 <strong>cwnd<code>加一</code></strong> 。使拥塞窗口cwnd按<strong>线性规律缓慢增长</strong>。</li>
+<li>算法归纳如下：<ul>
+<li>$cwnd \lt ssthresh$，使用 <strong><code>慢开始算法</code></strong></li>
+<li>$cwnd \gt ssthresh$，停止使用慢开始算法而改用 <strong><code>拥塞避免算法</code></strong></li>
+<li>$cwnd=ssthresh$，既可以用<strong>慢开始算法</strong>，又可以用 <strong><code>拥塞避免算法</code>(通常做法)</strong></li>
+</ul>
+</li>
+</ul>
+<h4 id="3-6-3-网络拥塞处理"><a href="#3-6-3-网络拥塞处理" class="headerlink" title="3.6.3. 网络拥塞处理 *"></a>3.6.3. 网络拥塞处理 *</h4><ul>
+<li>在上述两个阶段，如果发送方判断<strong>网络出现拥塞</strong>，即出现 <strong><code>超时</code></strong> 情况，则把慢开始门限 $ssthresh$ 设置为当前 $cwnd$ 的 <strong><code>一半</code></strong> （不能小于2）。然后将 $cwnd$ 置为 <strong><code>1</code></strong> ，并重新开始 <strong><code>慢开始算法</code></strong> 。</li>
+<li>目的是<strong>迅速减少</strong>主机发送到网络中的分组数，使得拥塞路由器有足够时间把队列中积压的分组处理完。</li>
+<li>拥塞避免<strong>无法完全避免拥塞</strong>，只能使网络不同意出现拥塞</li>
+</ul>
+<h4 id="3-6-4-快重传"><a href="#3-6-4-快重传" class="headerlink" title="3.6.4. 快重传 *"></a>3.6.4. 快重传 *</h4><ul>
+<li>发送方连续收到 <strong><code>三个冗余ACK</code></strong> 后，不必等待超时重传定时器到期，就<strong>立即重传</strong>丢失的报文段。</li>
+</ul>
+<h4 id="3-6-5-快恢复"><a href="#3-6-5-快恢复" class="headerlink" title="3.6.5. 快恢复 *"></a>3.6.5. 快恢复 *</h4><ul>
+<li>发送方连续收到 <strong><code>三个冗余ACK</code></strong> 时，将 $ssthresh$ 设置为当前 $cwnd$ 的 <strong><code>一半</code></strong> ，并将 $cwnd$ 置为 $ssthresh$ <strong><code>当前数值</code></strong>，然后进入 <strong><code>拥塞避免算法</code></strong> 。</li>
+<li>发送方预防网络发生拥塞，而由于可以收到连续的报文，故网络<strong>没有发生严重拥塞</strong>，所以<strong>跳过了慢开始算法</strong>，直接进入 <strong><code>拥塞避免算法</code></strong>，称为 <strong><code>快恢复</code></strong>。</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>Author: </span><span class="post-copyright-info"><a href="http://example.com">John Doe</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>Link: </span><span class="post-copyright-info"><a href="http://example.com/2024/01/13/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E4%BC%A0%E8%BE%93%E5%B1%82/">http://example.com/2024/01/13/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E4%BC%A0%E8%BE%93%E5%B1%82/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2024/01/12/New-Blog/" title="New Blog"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">Next</div><div class="next_info">New Blog</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">John Doe</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">4</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Contents</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BC%A0%E8%BE%93%E5%B1%82"><span class="toc-number">1.</span> <span class="toc-text">传输层</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E4%BC%A0%E8%BE%93%E5%B1%82%E6%8F%90%E4%BE%9B%E7%9A%84%E6%9C%8D%E5%8A%A1"><span class="toc-number">1.1.</span> <span class="toc-text">1. 传输层提供的服务</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-%E4%BC%A0%E8%BE%93%E5%B1%82%E7%9A%84%E5%8A%9F%E8%83%BD"><span class="toc-number">1.1.1.</span> <span class="toc-text">1.1. 传输层的功能 *</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-%E4%BC%A0%E8%BE%93%E5%B1%82%E7%9A%84%E5%AF%BB%E5%9D%80%E4%B8%8E%E7%AB%AF%E5%8F%A3"><span class="toc-number">1.1.2.</span> <span class="toc-text">1.2. 传输层的寻址与端口 *</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-2-1-%E7%AB%AF%E5%8F%A3%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="toc-number">1.1.2.1.</span> <span class="toc-text">1.2.1. 端口的作用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-2-2-%E7%AB%AF%E5%8F%A3%E5%8F%B7"><span class="toc-number">1.1.2.2.</span> <span class="toc-text">1.2.2. 端口号 *</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-2-3-%E5%A5%97%E6%8E%A5%E5%AD%97"><span class="toc-number">1.1.2.3.</span> <span class="toc-text">1.2.3. 套接字 *</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-%E6%97%A0%E8%BF%9E%E6%8E%A5%E6%9C%8D%E5%8A%A1%E4%B8%8E%E9%9D%A2%E5%90%91%E8%BF%9E%E6%8E%A5%E6%9C%8D%E5%8A%A1"><span class="toc-number">1.1.3.</span> <span class="toc-text">1.3. 无连接服务与面向连接服务</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-UDP%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.2.</span> <span class="toc-text">2. UDP协议 *</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-UDP%E6%95%B0%E6%8D%AE%E6%8A%A5"><span class="toc-number">1.2.1.</span> <span class="toc-text">2.1. UDP数据报 *</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-1-%E6%A6%82%E8%BF%B0"><span class="toc-number">1.2.1.1.</span> <span class="toc-text">2.1.1. 概述 *</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-2-UDP%E9%A6%96%E9%83%A8%E6%A0%BC%E5%BC%8F"><span class="toc-number">1.2.1.2.</span> <span class="toc-text">2.1.2. UDP首部格式 *</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-UDP%E6%A0%A1%E9%AA%8C"><span class="toc-number">1.2.2.</span> <span class="toc-text">2.2. UDP校验</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-TCP%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.3.</span> <span class="toc-text">3. TCP协议 *</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-TCP%E5%8D%8F%E8%AE%AE%E7%89%B9%E7%82%B9"><span class="toc-number">1.3.1.</span> <span class="toc-text">3.1. TCP协议特点 *</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-TCP%E6%8A%A5%E6%96%87%E6%AE%B5"><span class="toc-number">1.3.2.</span> <span class="toc-text">3.2. TCP报文段 *</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-TCP%E8%BF%9E%E6%8E%A5%E7%AE%A1%E7%90%86"><span class="toc-number">1.3.3.</span> <span class="toc-text">3.3. TCP连接管理 *</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-3-1-TCP%E8%BF%9E%E6%8E%A5%E7%9A%84%E5%BB%BA%E7%AB%8B"><span class="toc-number">1.3.3.1.</span> <span class="toc-text">3.3.1. TCP连接的建立 *</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-3-2-TCP%E8%BF%9E%E6%8E%A5%E7%9A%84%E9%87%8A%E6%94%BE"><span class="toc-number">1.3.3.2.</span> <span class="toc-text">3.3.2. TCP连接的释放 *</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4-TCP%E5%8F%AF%E9%9D%A0%E4%BC%A0%E8%BE%93"><span class="toc-number">1.3.4.</span> <span class="toc-text">3.4. TCP可靠传输</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-4-1-%E5%BA%8F%E5%8F%B7"><span class="toc-number">1.3.4.1.</span> <span class="toc-text">3.4.1. 序号</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-4-2-%E7%A1%AE%E8%AE%A4"><span class="toc-number">1.3.4.2.</span> <span class="toc-text">3.4.2. 确认</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-4-3-%E9%87%8D%E4%BC%A0"><span class="toc-number">1.3.4.3.</span> <span class="toc-text">3.4.3. 重传</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-5-TCP%E6%B5%81%E9%87%8F%E6%8E%A7%E5%88%B6"><span class="toc-number">1.3.5.</span> <span class="toc-text">3.5. TCP流量控制 *</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-6-TCP%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6"><span class="toc-number">1.3.6.</span> <span class="toc-text">3.6. TCP拥塞控制 *</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-6-1-%E6%85%A2%E5%BC%80%E5%A7%8B"><span class="toc-number">1.3.6.1.</span> <span class="toc-text">3.6.1. 慢开始 *</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-6-2-%E6%8B%A5%E5%A1%9E%E9%81%BF%E5%85%8D%E7%AE%97%E6%B3%95"><span class="toc-number">1.3.6.2.</span> <span class="toc-text">3.6.2. 拥塞避免算法 *</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-6-3-%E7%BD%91%E7%BB%9C%E6%8B%A5%E5%A1%9E%E5%A4%84%E7%90%86"><span class="toc-number">1.3.6.3.</span> <span class="toc-text">3.6.3. 网络拥塞处理 *</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-6-4-%E5%BF%AB%E9%87%8D%E4%BC%A0"><span class="toc-number">1.3.6.4.</span> <span class="toc-text">3.6.4. 快重传 *</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-6-5-%E5%BF%AB%E6%81%A2%E5%A4%8D"><span class="toc-number">1.3.6.5.</span> <span class="toc-text">3.6.5. 快恢复 *</span></a></li></ol></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/01/13/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E4%BC%A0%E8%BE%93%E5%B1%82/" title="计算机网络-传输层">计算机网络-传输层</a><time datetime="2024-01-13T02:44:03.000Z" title="Created 2024-01-13 10:44:03">2024-01-13</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/01/12/New-Blog/" title="New Blog">New Blog</a><time datetime="2024-01-12T14:49:52.000Z" title="Created 2024-01-12 22:49:52">2024-01-12</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/04/16/hello-world/" title="Hello World">Hello World</a><time datetime="2023-04-16T02:27:51.134Z" title="Created 2023-04-16 10:27:51">2023-04-16</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/03/26/try-md/" title="try.md">try.md</a><time datetime="2023-03-26T11:19:24.000Z" title="Created 2023-03-26 19:19:24">2023-03-26</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By John Doe</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Toggle Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.12.0"></script><script src="/js/main.js?v=4.12.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.32/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.1
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, '']
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.min.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typesetPromise()
+}</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
