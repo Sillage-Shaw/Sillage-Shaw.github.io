@@ -1,0 +1,230 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>编写MySQL语句的tips | Hexo</title><meta name="author" content="Shaw Ma"><meta name="copyright" content="Shaw Ma"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="MySQL语句是最常用也是最基本的SQL语句，最常用的地方就是在软工的Mapper层会编写各种各样的复杂SQL，当然了Where的部分可以使用Mybatis Plus的的wrapper实现，下面介绍MySQL编写时常用的几个tips。 使用explain语句查看执行计划使用Explain可以查看sql的性能瓶颈信息，并根据结果进行sql的相关优化。在select 语句前加上explain关键字，执">
+<meta property="og:type" content="article">
+<meta property="og:title" content="编写MySQL语句的tips">
+<meta property="og:url" content="http://example.com/2024/02/26/%E7%BC%96%E5%86%99MySQL%E8%AF%AD%E5%8F%A5%E7%9A%84tips/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="MySQL语句是最常用也是最基本的SQL语句，最常用的地方就是在软工的Mapper层会编写各种各样的复杂SQL，当然了Where的部分可以使用Mybatis Plus的的wrapper实现，下面介绍MySQL编写时常用的几个tips。 使用explain语句查看执行计划使用Explain可以查看sql的性能瓶颈信息，并根据结果进行sql的相关优化。在select 语句前加上explain关键字，执">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png">
+<meta property="article:published_time" content="2024-02-26T00:47:57.000Z">
+<meta property="article:modified_time" content="2024-02-26T02:04:39.354Z">
+<meta property="article:author" content="Shaw Ma">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2024/02/26/%E7%BC%96%E5%86%99MySQL%E8%AF%AD%E5%8F%A5%E7%9A%84tips/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.12.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.32/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: 'Copy Successful',
+    error: 'Copy Error',
+    noSupport: 'Browser Not Supported'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: 'Just now',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.0/dist/infinitegrid.min.js',
+    buttonText: 'Load More'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '编写MySQL语句的tips',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-02-26 10:04:39'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">10</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">1</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><hr class="custom-hr"/></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="Hexo"><span class="site-name">Hexo</span></a></span><div id="menus"><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">编写MySQL语句的tips</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2024-02-26T00:47:57.000Z" title="Created 2024-02-26 08:47:57">2024-02-26</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2024-02-26T02:04:39.354Z" title="Updated 2024-02-26 10:04:39">2024-02-26</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="编写MySQL语句的tips"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post Views:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>MySQL语句是最常用也是最基本的SQL语句，最常用的地方就是在软工的Mapper层会编写各种各样的复杂SQL，当然了Where的部分可以使用Mybatis Plus的的wrapper实现，下面介绍MySQL编写时常用的几个tips。</p>
+<h1><span id="使用explain语句查看执行计划">使用explain语句查看执行计划</span></h1><p>使用Explain可以查看sql的性能瓶颈信息，并根据结果进行sql的相关优化。在select 语句前加上explain关键字，执行的时候并不会真正执行SQL语句，而是返回sql查询语句对应的执行计划信息，根据返回的信息可以分析性能瓶颈然后进行优化。</p>
+<p><img src="./%E7%BC%96%E5%86%99MySQL%E8%AF%AD%E5%8F%A5%E7%9A%84tips/image-20240226085645851.png" alt="image-20240226085645851"></p>
+<p>上面就是执行explain语句返回的结果，下面分析各个字段返回的含义。</p>
+<h2><span id="id">id</span></h2><p>代表sql中查询语句的序列号，序列号越大则执行的优先级越高，序号一样谁在前谁先执行。id为null则最后执行。</p>
+<h2><span id="select_type">select_type</span></h2><p>代表当前被分析的SQL语句的复杂度，包括<code>SIMPLE</code>&amp;<code>PRIMARY</code>&amp;<code>SUBQUERY</code>&amp;<code>DERIVED</code>四个值。</p>
+<ul>
+<li><code>SIMPLE</code>表示简单查询</li>
+<li><code>PRIMARY</code>表示复杂查询中最外层的select查询语句</li>
+<li><code>SUBQUERY</code>表示子查询语句，跟在select后面的select查询语句，比如：<code>explain select (select 1 from film where id =1) from actor;</code></li>
+<li><code>DERIVED</code>表示派生查询，跟在from后面的select查询语句。</li>
+</ul>
+<p>示例：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">explain <span class="keyword">select</span> (<span class="keyword">select</span> <span class="number">1</span> <span class="keyword">from</span> actor <span class="keyword">where</span> id <span class="operator">=</span><span class="number">1</span>) <span class="keyword">from</span> (<span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">from</span> film <span class="keyword">where</span> id<span class="operator">=</span><span class="number">1</span>) ac;</span><br></pre></td></tr></table></figure>
+<p>先进行派生查询，然后进行子查询，最后进行主查询。</p>
+<h2><span id="table">table</span></h2><p>表示当前访问的表的名称。当from中有子查询时，table字段显示的是<derivedn> N为derived的id的值。</derivedn></p>
+<h2><span id="partitions">partitions</span></h2><p>返回数据分区的信息。</p>
+<h2><span id="type">type</span></h2><p>这个字段表示查找数据的大致范围，这个字段所有值表示的从最优到最差依次为：</p>
+<p>==system &gt; const &gt; eq_ref &gt; ref &gt; range &gt; index&gt; all==</p>
+<blockquote>
+<p>一般来说优化到了range就可以了，最好到ref。</p>
+</blockquote>
+<ul>
+<li><code>null</code>：如果type字段的结果为null的话表示当前的查询语句不需要访问表，只需要访问索引树就可以获取需要的数据，如使用主键索引查询时type字段就为null。</li>
+<li><code>system/const</code>：使用主键或者唯一索引查询时，只能匹配一条数据，一般可以对SQL语句优化为一个常量。system是const的特殊情况，表示该表只有一行。</li>
+<li><code>eq_ref</code>在进行连接查询时，如果使用主键索引或唯一索引连接查询，结果返回一条数据，则type的值一般为<code>eq_ref</code>。</li>
+<li><code>ref</code>相比于eq_ref不使用主键索引或唯一索引，可能获取到多个符合条件的行，不再是唯一的。</li>
+<li><code>range</code>范围查找。</li>
+<li><code>index</code>表示扫描索引树就能获取到的数据。</li>
+<li><code>all</code>表示全表扫描，性能最差的一种。</li>
+</ul>
+<h2><span id="possible_keys">possible_keys</span></h2><p>表示查询时可能用到的索引，但是不一定用到。</p>
+<h2><span id="keys">keys</span></h2><p>SQL执行时真正使用到的索引字段。</p>
+<h2><span id="key_len">key_len</span></h2><p>用到的索引字段的长度，通过这个字段可以显示用到了索引字段的哪些列，主要针对联合索引。</p>
+<h2><span id="ref">ref</span></h2><p>表示哪些列或常量被用于查找索引上的值</p>
+<h2><span id="rows">rows</span></h2><p>表示在查询过程中检索了多少列，但是并不一定就是返回这么多列。</p>
+<h2><span id="extra">extra</span></h2><p>展示一些额外信息。</p>
+<h1><span id="使用delete和update语句时增加limit关键字">使用delete和update语句时增加limit关键字</span></h1><p>主要可以降低写错SQL的代价，同时可以提高效率，比如delete后跟上limit 1，命中后不会继续扫描。</p>
+<h1><span id="设计表时所有表和字段都要添加相应的注释">设计表时所有表和字段都要添加相应的注释</span></h1><p>使用<code>comment</code>关键字。</p>
+<h1><span id="遵循sql书写规范关键字使用大写自定义列使用小写同时使用缩进">遵循SQL书写规范，关键字使用大写，自定义列使用小写，同时使用缩进。</span></h1><h1><span id="insert语句表明对应的字段名称">insert语句表明对应的字段名称</span></h1><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> Student(student_id,name,score) <span class="keyword">values</span> (<span class="string">&#x27;666&#x27;</span>,<span class="string">&#x27;shaw&#x27;</span>,<span class="number">100</span>);</span><br></pre></td></tr></table></figure>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>Author: </span><span class="post-copyright-info"><a href="http://example.com">Shaw Ma</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>Link: </span><span class="post-copyright-info"><a href="http://example.com/2024/02/26/%E7%BC%96%E5%86%99MySQL%E8%AF%AD%E5%8F%A5%E7%9A%84tips/">http://example.com/2024/02/26/%E7%BC%96%E5%86%99MySQL%E8%AF%AD%E5%8F%A5%E7%9A%84tips/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2024/01/23/C%E8%AF%AD%E8%A8%80%E7%9A%84%E5%80%BC%E4%BC%A0%E9%80%92%E4%B8%8E%E5%BC%95%E7%94%A8%E4%BC%A0%E9%80%92/" title="C语言的值传递与引用传递"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">Next</div><div class="next_info">C语言的值传递与引用传递</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Shaw Ma</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">10</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">1</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Contents</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">使用explain语句查看执行计划</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">1.1.</span> <span class="toc-text">id</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">1.2.</span> <span class="toc-text">select_type</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">1.3.</span> <span class="toc-text">table</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">1.4.</span> <span class="toc-text">partitions</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">1.5.</span> <span class="toc-text">type</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">1.6.</span> <span class="toc-text">possible_keys</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">1.7.</span> <span class="toc-text">keys</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">1.8.</span> <span class="toc-text">key_len</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">1.9.</span> <span class="toc-text">ref</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">1.10.</span> <span class="toc-text">rows</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">1.11.</span> <span class="toc-text">extra</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">2.</span> <span class="toc-text">使用delete和update语句时增加limit关键字</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">3.</span> <span class="toc-text">设计表时所有表和字段都要添加相应的注释</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">4.</span> <span class="toc-text">遵循SQL书写规范，关键字使用大写，自定义列使用小写，同时使用缩进。</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">5.</span> <span class="toc-text">insert语句表明对应的字段名称</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/02/26/%E7%BC%96%E5%86%99MySQL%E8%AF%AD%E5%8F%A5%E7%9A%84tips/" title="编写MySQL语句的tips">编写MySQL语句的tips</a><time datetime="2024-02-26T00:47:57.000Z" title="Created 2024-02-26 08:47:57">2024-02-26</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/01/23/C%E8%AF%AD%E8%A8%80%E7%9A%84%E5%80%BC%E4%BC%A0%E9%80%92%E4%B8%8E%E5%BC%95%E7%94%A8%E4%BC%A0%E9%80%92/" title="C语言的值传递与引用传递">C语言的值传递与引用传递</a><time datetime="2024-01-23T07:59:16.000Z" title="Created 2024-01-23 15:59:16">2024-01-23</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/01/14/OJ%E5%B9%B3%E5%8F%B0/%E5%89%8D%E7%AB%AF%E9%A1%B9%E7%9B%AE/" title="Untitled">Untitled</a><time datetime="2024-01-14T10:08:26.709Z" title="Created 2024-01-14 18:08:26">2024-01-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/01/14/OJ%E5%B9%B3%E5%8F%B0/%E9%A1%B9%E7%9B%AE%E6%96%87%E6%A1%A3/" title="Untitled">Untitled</a><time datetime="2024-01-14T03:21:09.911Z" title="Created 2024-01-14 11:21:09">2024-01-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/01/14/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E5%BA%94%E7%94%A8%E5%B1%82/" title="计算机网络-应用层">计算机网络-应用层</a><time datetime="2024-01-14T02:17:48.000Z" title="Created 2024-01-14 10:17:48">2024-01-14</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2025 By Shaw Ma</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Toggle Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.12.0"></script><script src="/js/main.js?v=4.12.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.32/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.1
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, '']
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.min.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typesetPromise()
+}</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
